@@ -7,10 +7,19 @@ const CreateRoomBtn = () => {
         const data = await response.json();
         console.log(data);
     }
+    
+    const generateRandomPin = () => {
+        let pin = Math.random().toString(36).substring(2, 8);
+        // console.log(pin);
+        return pin;
+    }
+
+
 
     return (
         <button 
         onClick={fetchMongoData} 
+        // onClick={generateRandomPin}
         type="button" 
         className="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
         Create Room
