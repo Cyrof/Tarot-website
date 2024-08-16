@@ -1,4 +1,3 @@
-import Link from "next/link";
 import CreateRoomBtn from "./components/createRoomBtn";
 
 export default function Home() {
@@ -6,9 +5,7 @@ export default function Home() {
     <main>
       <div className="wrapper">
         <div className="btns">
-          <Link href="./room">
-            <CreateRoomBtn/> 
-          </Link>
+          <CreateRoomBtn/> 
         </div>
       </div>
     </main>
