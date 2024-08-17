@@ -51,7 +51,7 @@ const CreateRoomBtn = () => {
             if (response.ok){
                 // On success, redirect to the new room page
                 console.log('Room created successfully.');
-                router.push(`./room?id=${pin}`);
+                router.push(`/room/${pin}`);
             } else {
                 // Handle errors
                 console.error('Error creating room:', await response.json());
