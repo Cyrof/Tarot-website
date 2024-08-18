@@ -9,5 +9,6 @@
 export interface roomSession {
     room_pin: string;
     room_sess: string;
+    isHost: boolean;
     createdAt: Date;
 };

@@ -37,6 +37,7 @@ const CreateRoomBtn = () => {
         const roomSess : roomSession = {
             room_pin: pin,
             room_sess: sessionId,
+            isHost: true,  // Assume the user is the host for now
             createdAt: new Date(),
         }
 
@@ -49,6 +50,8 @@ const CreateRoomBtn = () => {
             });
 
             if (response.ok){
+                localStorage.setItem('sessionId', sessionId);
+
                 // On success, redirect to the new room page
                 console.log('Room created successfully.');
                 router.push(`/room/${pin}`);

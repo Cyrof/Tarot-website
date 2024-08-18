@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "flowbite": "^2.5.1",
+    "flowbite-react": "^0.10.1",
     "mongodb": "^6.8.0",
     "next": "14.2.5",
     "react": "^18",
