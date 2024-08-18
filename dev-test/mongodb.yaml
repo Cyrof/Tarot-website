@@ -10,3 +10,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: user1234
+    volumes: 
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data: 
+    driver: local
+    driver_opts: 
+      o: bind
+      type: none
+      device: ~/projects/tarot_project/tarot_web/next_tarot/dev-test/mongo_data/

@@ -26,15 +26,21 @@ export async function setupTTLIndex() {
         const database = client.db("tarot_db");
         const roomCollection = database.collection("rooms");
 
+        // Inset a test document to create the collection 
+        // await roomCollection.insertOne({ createdAt: new Date() });
+        // console.log("Test document inserted, collection created.");
+
         // Retrieve existing indexes from the collection
         const indexes = await roomCollection.indexes();
+        console.log("Existing indexes:", indexes);
 
         // Check if the TTL index on `createdAt` field already exists
-        const ttlIndexExists = indexes.some(index => index.name === 'createdAt_1');
+        // const ttlIndexExists = indexes.some(index => index.name === 'createdAt_1');
+        const ttlIndexExists = indexes.some(index => index.key.createdAt === 1);
 
         if (!ttlIndexExists) {
             // Create TTL index on 'createdAt' field that expires after 8 hours (28800 seconds)
-            await roomCollection.createIndex({ 'createdAt': 1 }, { expireAfterSeconds: 28800});
+            await roomCollection.createIndex({ 'createdAt': 1 }, { expireAfterSeconds: 10});
             console.log("TTL index created successfully.");
         } else {
             console.log("TTL index already exists.");

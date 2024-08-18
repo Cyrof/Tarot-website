@@ -30,6 +30,11 @@ export async function POST(request: NextRequest){
         // Parse the request body to retrieve the room session data. 
         const body: roomSession = await request.json();
 
+        // Convert createdAt from string to Date if it's a string
+        if (typeof body.createdAt === "string"){
+            body.createdAt = new Date(body.createdAt);
+        }
+
         // insert the room session data into the `rooms` collection.
         await roomCollection.insertOne(body);
         

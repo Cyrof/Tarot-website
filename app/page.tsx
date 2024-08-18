@@ -6,6 +6,7 @@ export default function Home() {
       <div className="wrapper">
         <div className="btns">
           <CreateRoomBtn/> 
+
         </div>
       </div>
     </main>
