@@ -12,3 +12,7 @@ export interface roomSession {
     isHost: boolean;
     createdAt: Date;
 };
+
+export interface pin {
+    roomPin: String
+}

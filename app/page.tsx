@@ -17,7 +17,7 @@ export default function Home () {
             Join Room
           </button>
         </div>
-        {/* Modal */}
+        {/* Modal */} 
         <JoinRoomModal/>
       </div>
       <script src="/scripts/flowbite.min.js"></script>
