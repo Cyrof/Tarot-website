@@ -1,9 +1,13 @@
 'use client'
+import { useState } from "react";
 import { pin } from "../interfaces/db_interfaces";
 import { useRouter } from 'next/navigation';
+import { error } from "console";
 
 const JoinRoomModal = () => {
   const router = useRouter();
+  const [errorMsg, setErrMsg] = useState('');
+
   async function validateRoom(formData: FormData){
     const pinData: pin = {
       roomPin: formData.get('roomPin') as string
@@ -16,8 +20,17 @@ const JoinRoomModal = () => {
     });
 
     if (res.ok){
-      router.push(`/room/${pinData.roomPin}`);
+      // router.push(`/room/${pinData.roomPin}`);
+      const data = await res.json();
+      if (data.message === "Found") {
+        router.push(`/room/${pinData.roomPin}`);
+      }
+    } else if (res.status === 404){
+      setErrMsg('Room Not Found.');
+    } else {
+      setErrMsg('An error occurred. Plase try again later.');
     }
+
   }
 
   return (
@@ -44,6 +57,11 @@ const JoinRoomModal = () => {
           action={validateRoom}
           >
             <div className="p-4 md:p-5 space-y-4">
+              {errorMsg && (
+                <div className="text-red-600 text-center mb-4">
+                  {errorMsg}
+                </div>
+              )}
               <div className="flex-col items-center justify-center">
                 {/* <label htmlFor="room-pin" className="block text-center mb-2 text-l font-semibold text-gray-900 dark:text-white">Room Pin</label> */}
                 <input type="text" id="room-pin" name="roomPin" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Room Pin"/>

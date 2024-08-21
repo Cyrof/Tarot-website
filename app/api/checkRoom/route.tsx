@@ -17,14 +17,22 @@ export async function POST(request: NextRequest){
         const db_data = await db_res.json();
 
 
-        db_data.forEach((room: roomSession) => {
-            if (room.room_pin === pinData.roomPin){
-                // if room pin matches, return room data
-                return NextResponse.json({ isValid: true }, { status: 200 });
-            }
-        })
+        // db_data.forEach((room: roomSession) => {
+        //     if (room.room_pin === pinData.roomPin){
+        //         // if room pin matches, return room data
+        //         return NextResponse.json({ message: "Found"}, { status: 200 });
+        //     } else {
+        //         return NextResponse.json({ message: "Room not found." }, {status: 404});
+        //     }
+        // });
+        const matchingRoom = db_data.find((room: roomSession) => room.room_pin === pinData.roomPin);
 
-        return NextResponse.json({ message: "Data received" });
+        if (matchingRoom){
+            return NextResponse.json({ message: "Found" }, { status: 200 });
+        } else {
+            return NextResponse.json({ message: "Room not found." }, { status: 404});
+        }
+
     } catch (err){
         console.error('Error:', err);
         return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });

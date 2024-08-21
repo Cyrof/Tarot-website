@@ -20,7 +20,7 @@ export default function Home () {
         {/* Modal */} 
         <JoinRoomModal/>
       </div>
-      <script src="/scripts/flowbite.min.js"></script>
+      <script src="/scripts/flowbite.min.js" async/>
     </main>
   );
 }

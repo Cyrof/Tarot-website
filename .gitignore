@@ -37,3 +37,6 @@ next-env.d.ts
 
 # Mongo test data
 mongo_data/
+
+# all test  images
+images/
