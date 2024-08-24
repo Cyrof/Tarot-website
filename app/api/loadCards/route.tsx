@@ -1,4 +1,5 @@
-import { readdir, readdirSync } from "fs";
+// import { readdir, readdirSync } from "fs";
+import { promises as fs} from 'fs';
 import { join } from "path";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,7 +16,8 @@ function calculateCardAngle(index: number){
 export async function GET(){
     try{
         const imagesDir = join(process.cwd(), 'public/cards');
-        const imageFiles = readdirSync(imagesDir);
+        // const imageFiles = readdirSync(imagesDir);
+        const imageFiles = await fs.readdir(imagesDir);
         // const imagePaths = imageFiles.map(file => join('/cards', file));
         const images = imageFiles.map((img, index) => {
             const imgPath = join('/cards', img);
@@ -34,6 +36,7 @@ export async function GET(){
 
         return NextResponse.json({ images: images }, { status: 200 });
     } catch (err){
+        console.error('Error reading image files:', err);
         return NextResponse.json({ message: "Internal error" }, {status: 500});
     }
 

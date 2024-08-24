@@ -1,7 +1,6 @@
 'use client';
-import React, { useEffect } from 'react'
-import { useParams, usePathname } from 'next/navigation';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
 interface ImageData {
@@ -14,18 +13,22 @@ interface ImageData {
 const Room = () => {
   const { id } = useParams();
   const [message, setMessage] = useState<string | null>(null);
-  const [url, setUrl] = useState<Location | null>(null);
+  const [url, setUrl] = useState<string>('');
   const [images, loadImages] = useState<ImageData[]>([]);
 
   useEffect(() => {
-    setUrl(window.location);
+    setUrl(window.location.href);
+
     const fetchImages = async () => {
-      const res = await fetch("/api/loadCards");
-      if (res.ok) {
+      try{
+        const res = await fetch('/api/loadCards');
+        if (!res.ok) throw new Error('Failed to fetch images');
         const data = await res.json();
         loadImages(data.images);
+      } catch (err) {
+        console.error('Error fetchying images:', err);
       }
-    }
+    };
 
     fetchImages()
   }, []);
@@ -67,7 +70,7 @@ const Room = () => {
     <div className='m-0 h-screen w-screen'>
       <div>
         <h1>Room ID: {id}</h1>
-        <h2>Room Link: {url?.href}</h2>
+        <h2>Room Link: {url}</h2>
       </div>
       <button
         onClick={() => handleClick('Button 1')}
