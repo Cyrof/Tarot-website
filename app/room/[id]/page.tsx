@@ -15,6 +15,8 @@ const Room = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [url, setUrl] = useState<string>('');
   const [images, loadImages] = useState<ImageData[]>([]);
+  const [maxXOffset, setMaxXOffset] = useState<number>(0);
+  const [maxYOffset, setMaxYOffset] = useState<number>(0);
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -25,6 +27,8 @@ const Room = () => {
         if (!res.ok) throw new Error('Failed to fetch images');
         const data = await res.json();
         loadImages(data.images);
+        setMaxXOffset(data.xOffset);
+        setMaxYOffset(data.yOffset);
       } catch (err) {
         console.error('Error fetchying images:', err);
       }
@@ -86,19 +90,24 @@ const Room = () => {
       </button>
       {message && <p>{message}</p>}
       <div
-      className='relative h-3/4 w-4/5 bg-blue-300 m-auto flex items-center'
+      className='relative h-3/4 w-4/5 m-auto flex items-center justify-center'
       >
-        {images?.map((img, index) => (
-          <Image
-          key={index}
-          src={img.img}
-          alt={`image_${index}`}
-          width={120}
-          height={220}
-          style={img.css}
-          className='object-cover absolute'
-          />
-        ))}
+        <div 
+        className='relative h-4/5 w-4/6'
+        // style={{ height: maxYOffset + 200, width: maxXOffset + 120 }}
+        >
+          {images?.map((img, index) => (
+            <Image
+            key={index}
+            src={img.img}
+            alt={`image_${index}`}
+            width={120}
+            height={220}
+            style={img.css}
+            className='object-cover absolute hover:-translate-y-1/4 hover:border-red-300 cursor-pointer'
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
