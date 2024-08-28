@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import Tarot_arc from '@/app/components/Tarot_arc';
 
 interface ImageData {
   img: string;
@@ -14,27 +15,24 @@ const Room = () => {
   const { id } = useParams();
   const [message, setMessage] = useState<string | null>(null);
   const [url, setUrl] = useState<string>('');
-  const [images, loadImages] = useState<ImageData[]>([]);
-  const [maxXOffset, setMaxXOffset] = useState<number>(0);
-  const [maxYOffset, setMaxYOffset] = useState<number>(0);
 
   useEffect(() => {
     setUrl(window.location.href);
 
-    const fetchImages = async () => {
-      try{
-        const res = await fetch('/api/loadCards');
-        if (!res.ok) throw new Error('Failed to fetch images');
-        const data = await res.json();
-        loadImages(data.images);
-        setMaxXOffset(data.xOffset);
-        setMaxYOffset(data.yOffset);
-      } catch (err) {
-        console.error('Error fetchying images:', err);
-      }
-    };
+    // const fetchImages = async () => {
+    //   try{
+    //     const res = await fetch('/api/loadCards');
+    //     if (!res.ok) throw new Error('Failed to fetch images');
+    //     const data = await res.json();
+    //     loadImages(data.images);
+    //     setMaxXOffset(data.xOffset);
+    //     setMaxYOffset(data.yOffset);
+    //   } catch (err) {
+    //     console.error('Error fetchying images:', err);
+    //   }
+    // };
 
-    fetchImages()
+    // fetchImages()
   }, []);
 
   const handleClick = (buttonName: string) => {
@@ -89,7 +87,8 @@ const Room = () => {
         Button 2
       </button>
       {message && <p>{message}</p>}
-      <div
+      <Tarot_arc/>  
+      {/* <div
       className='relative h-3/4 w-4/5 m-auto flex items-center justify-center'
       >
         <div 
@@ -108,7 +107,7 @@ const Room = () => {
             />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
