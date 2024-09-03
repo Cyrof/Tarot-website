@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 const Tarot_arc = () => {
     const [images, loadImages] = useState<cards>({ front: [], back: []});
-    // const  screenSize = useScreenSize();
+    const [selected, setSelected] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -25,17 +25,23 @@ const Tarot_arc = () => {
 
     const calculateCardPosition = (index: number, totalCards: number) => {
         const maxAngle = 70; // Total spread angle for all cards
-        const middleIndex =  (totalCards -1 ) / 2; // find the center card index
 
         var angle = (index / (totalCards - 1)) * maxAngle - maxAngle / 2; // angle for rotation
-        // var angle = ((index - middleIndex) / middleIndex) * (maxAngle / 2);
         const radius = 600; // radius of the arc
         const xOffset = radius * Math.sin((angle * Math.PI) / 100); // calculate x position using sine
         const yOffset = radius * (1 - Math.cos((angle * Math.PI) / 100)); // calculate y position using cosine
 
-        // angle = angle < 0 ? angle - 2 : angle + 2;
-
         return { angle, xOffset, yOffset };
+    };
+
+    const handleClick = (card: string, index: number) => {
+        loadImages(prevImages => {
+            const updatedFront = prevImages.front.filter((_, i) => i !== index);
+            const updatedBack = prevImages.back.filter((_, i) => i !== index);
+            return { front: updatedFront, back: updatedBack};
+        })
+
+        setSelected(prevSelected => [...prevSelected, card]);
     }
 
     return (
@@ -53,7 +59,7 @@ const Tarot_arc = () => {
                             transition: 'transform 0,3s',
                         }}
                         >
-                            <div className="card cursor-pointer flex justify-center text-center relative transition-transform duration-100 ease-in-out hover:-translate-y-5">
+                            <div className="card cursor-pointer flex justify-center text-center relative transition-transform duration-100 ease-in-out hover:-translate-y-5" onClick={() => handleClick(img, index)}>
                                 <div className="front h-full w-full flex justify-center text-center font-bold">
                                     <Image
                                     src={img}
@@ -79,6 +85,15 @@ const Tarot_arc = () => {
             </ul>
             <div className=' h-96 w-2/5 bg-purple-800'>
                 <span>test value</span>
+                {selected.map((card, index) => (
+                    <Image
+                    key={index}
+                    src={card}
+                    alt={`image_${index}`}
+                    width={120}
+                    height={220}
+                    />
+                ))};
             </div>
         </div>
     )
