@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import type { PluginAPI } from "tailwindcss/types/config";
 
 const config: Config = {
   content: [
@@ -8,10 +9,24 @@ const config: Config = {
     "./node_modules/flowbite-react/lib/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backfaceVisibility: {
+        hidden: 'hidden',
+      }
+    },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    function ({ addUtilities }: PluginAPI){
+      addUtilities({
+        '.backface-hidden': {
+          'backface-visibility': 'hidden',
+        },
+        '.backface-visible': {
+          'backface-visibility': 'visible',
+        }
+      })
+    }
   ],
 };
 export default config;

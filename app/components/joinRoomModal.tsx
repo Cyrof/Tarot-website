@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { pin } from "../interfaces/db_interfaces";
 import { useRouter } from 'next/navigation';
-import { error } from "console";
 
 const JoinRoomModal = () => {
   const router = useRouter();
