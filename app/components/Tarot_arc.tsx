@@ -39,8 +39,8 @@ const Tarot_arc = () => {
     }
 
     return (
-        <div className="card-container flex flex-col w-full h-screen justify-center items-center">
-            <ul className="cards relative w-full h-1/2 flex justify-center items-center -translate-y-3/4">
+        <div className="card-container flex flex-col w-full h-full max-w-full max-h-full justify-center items-center">
+            <ul className="cards relative w-full h-1/2 flex justify-center items-center -translate-y-1/4 translate-x-20">
                 {images.front.map((img, index) => {
                     const { angle, xOffset, yOffset } = calculateCardPosition(index, images.front.length);
                     return (
@@ -48,7 +48,7 @@ const Tarot_arc = () => {
                         key={`cards-${index}`}
                         className='absolute'
                         style={{
-                            transform: `translate(${xOffset}px, ${yOffset}px) rotate(${angle}deg)`,
+                            transform: `translate(calc(${xOffset}px - 50%), calc(${yOffset}px - 50%)) rotate(${angle}deg)`,
                             transformOrigin: 'bottom center',
                             transition: 'transform 0,3s',
                         }}
@@ -77,48 +77,10 @@ const Tarot_arc = () => {
                     );
                 })}
             </ul>
+            <div className=' h-96 w-2/5 bg-purple-800'>
+                <span>test value</span>
+            </div>
         </div>
-        // <div 
-        // className="card-container flex flex-col w-full h-screen justify-center"
-        // >
-        //     <ul 
-        //     className="cards flex justify-center text-center w-full h-1/2"
-        //     >
-        //         {/* {images.front.map((img, index) => {
-        //             <li>
-
-        //             </li>
-        //         })} */}
-        //         {images.front.map((img, index) => (
-        //             <li key={`card-${index}`}
-        //             className='absolute hover:-translate-y-4'
-        //             >
-        //                 <div 
-        //                 className="card cursor-pointer flex justify-center text-center relative transition-transform duration-100 ease-in-out backface-hidden"
-        //                 >
-        //                     <div className="front backface-hidden h-full w-full flex justify-center text-center font-bold rotate-180 inset-0 z-20">
-        //                         <Image
-        //                         key={index}
-        //                         src={img}
-        //                         alt={`image_${index}`}
-        //                         width={120}
-        //                         height={220}
-        //                         />
-        //                     </div>
-        //                     <div className="back absolute">
-        //                         <Image
-        //                         key={index}
-        //                         src={images.back[0]}
-        //                         alt={`image_${index}`}
-        //                         width={120}
-        //                         height={220}
-        //                         />
-        //                     </div>
-        //                 </div>
-        //             </li>
-        //         ))}
-        //     </ul>
-        // </div>
     )
 }
 
