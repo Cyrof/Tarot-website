@@ -7,6 +7,8 @@ import Image from 'next/image';
 const Tarot_arc = () => {
     const [images, loadImages] = useState<cards>({ front: [], back: []});
     const [selected, setSelected] = useState<string[]>([]);
+    const [flipping, setFlipping] = useState<number | null>(null);
+
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -35,13 +37,18 @@ const Tarot_arc = () => {
     };
 
     const handleClick = (card: string, index: number) => {
-        loadImages(prevImages => {
-            const updatedFront = prevImages.front.filter((_, i) => i !== index);
-            const updatedBack = prevImages.back.filter((_, i) => i !== index);
-            return { front: updatedFront, back: updatedBack};
-        })
+        setFlipping(index);
 
-        setSelected(prevSelected => [...prevSelected, card]);
+        setTimeout(() => {
+            loadImages(prevImages => {
+                const updatedFront = prevImages.front.filter((_, i) => i !== index);
+                const updatedBack = prevImages.back.filter((_, i) => i !== index);
+                return { front: updatedFront, back: updatedBack};
+            });
+
+            setSelected(prevSelected => [...prevSelected, card]);
+            setFlipping(null);
+        }, 1000);      
     }
 
     return (
@@ -49,17 +56,23 @@ const Tarot_arc = () => {
             <ul className="cards relative w-full h-1/2 flex justify-center items-center -translate-y-1/4 translate-x-20">
                 {images.front.map((img, index) => {
                     const { angle, xOffset, yOffset } = calculateCardPosition(index, images.front.length);
+                    const isFlipping = flipping === index;
+
                     return (
                         <li
                         key={`cards-${index}`}
-                        className='absolute'
+                        className={`absolute ${isFlipping ? 'flipping': ''}`}
                         style={{
                             transform: `translate(calc(${xOffset}px - 50%), calc(${yOffset}px - 50%)) rotate(${angle}deg)`,
                             transformOrigin: 'bottom center',
                             transition: 'transform 0,3s',
+                            zIndex: isFlipping ? 100 : index, 
                         }}
                         >
-                            <div className="card cursor-pointer flex justify-center text-center relative transition-transform duration-100 ease-in-out hover:-translate-y-5" onClick={() => handleClick(img, index)}>
+                            <div 
+                            className={`card cursor-pointer flex justify-center text-center relative transition-transform duration-100 ease-in-out hover:-translate-y-5 ${isFlipping ? 'flip' : ''}`} 
+                            onClick={() => handleClick(img, index)}
+                            >
                                 <div className="front h-full w-full flex justify-center text-center font-bold">
                                     <Image
                                     src={img}
@@ -69,7 +82,7 @@ const Tarot_arc = () => {
                                     className='w-auto h-auto'
                                     />
                                 </div>
-                                <div className="back absolute">
+                                <div className="back absolute backface-hidden">
                                     <Image
                                     src={images.back[0]}
                                     alt={`image_back_${index}`}
@@ -83,8 +96,8 @@ const Tarot_arc = () => {
                     );
                 })}
             </ul>
-            <div className=' h-96 w-2/5 bg-purple-800'>
-                <span>test value</span>
+            <div className=' h-96 w-2/5 bg-purple-800 flex flex-wrap justify-center items-center gap-4'>
+                {/* <span>test value</span> */}
                 {selected.map((card, index) => (
                     <Image
                     key={index}
@@ -92,8 +105,9 @@ const Tarot_arc = () => {
                     alt={`image_${index}`}
                     width={120}
                     height={220}
+                    className='flex-shrink-0'
                     />
-                ))};
+                ))}
             </div>
         </div>
     )
