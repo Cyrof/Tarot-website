@@ -22,3 +22,27 @@ body {
     text-wrap: balance;
   }
 }
+
+/* tarot arc styles */
+.card {
+  perspective: 1000px;
+  
+}
+
+.flip {
+  transform-style: preserve-3d;
+  animation: flip-card 0.6s forwards;
+}
+
+.flipping {
+  transition: transform 0.6s ease-in-out;
+}
+
+@keyframes flip-card {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
